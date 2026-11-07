@@ -5,20 +5,10 @@ description: "Produce a complete fal product ad campaign from a brief and produc
 
 ## Client execution adapter
 
-This package uses the connected fal MCP tools for generation. CLI commands in
-this guide and its references illustrate endpoint inputs and dependencies;
-translate them into MCP calls instead of requiring a CLI installation.
-Use recommend_model for current choices unless the user names an endpoint.
-When it supplies next_call and input_contract, use those directly. Otherwise
-inspect the endpoint schema and matching price units before execution.
-Use run_model for bounded work; submit_job, check_job and get_job_result for
-queued work. Save the request ID immediately and poll that same request.
-Never assume a hosted sandbox, asset library or renderer exists. Verify local
-capabilities before composition. If a required capability is absent, deliver
-the reviewed components and report the incomplete stage. Preserve the user's
-provider, model, scope, budget and approval boundaries.
-
-The `genmedia` skill remains an optional terminal fallback only.
+Use the connected fal MCP tools and this bundle's `fal-media` entry point.
+The local outcome guides provide production checks; specialist guidance, model
+choices, input contracts and prices come from the live tools when needed.
+No CLI, hosted sandbox or renderer is installed by this skill bundle.
 
 
 # Product ad campaign
@@ -68,10 +58,3 @@ privileged host tool or unavailable renderer to fill the gap.
 
 Keep a manifest of sources, endpoint, actual inputs, request ID, result URL, local
 file and QA findings. Inspect delivered artifacts and report unverified checks.
-
-## Terminal execution
-
-For a terminal-only workflow, read the [genmedia production-plan guide](../genmedia/references/production-plans.md)
-and copy this skill's [example stage plan](assets/plan.json). The guide describes
-explicit submission, state files and recovery. These examples are optional CLI
-resources; connected MCP hosts use native fal tools.

@@ -7,6 +7,10 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
+HYBRID_SKILLS = {
+    'fal-media', 'product-ad-campaign', 'game-asset-production',
+    'storyboard-to-short-film', 'ecommerce-product-photography', 'localize-and-repurpose',
+}
 GENERATED_ROOT_FILES = {
     'gemini-extension.json', 'GEMINI.md', 'LICENSE', 'skills-source.lock.json',
 }
@@ -21,6 +25,8 @@ def validate(root=ROOT):
         raise ValueError('A full canonical Git commit is required')
     expected = lock['files']
     actual = {p.relative_to(root).as_posix() for p in (root / 'skills').rglob('*') if p.is_file()}
+    if actual != {'skills/index.json'} | {f'skills/{name}/SKILL.md' for name in HYBRID_SKILLS}:
+        raise ValueError('Expected only the six hybrid entry points without optional runtimes')
     actual.update(GENERATED_ROOT_FILES)
     if set(expected) != actual:
         raise ValueError('Generated file set differs from source lock')
@@ -43,6 +49,10 @@ def validate(root=ROOT):
 
     index = json.loads((root / 'skills/index.json').read_text(encoding='utf-8'))
     source = json.loads((root / 'skills-source.lock.json').read_text(encoding='utf-8'))
+    if source.get('bundle') != 'hybrid' or set(source.get('entrypoints', [])) != HYBRID_SKILLS:
+        raise ValueError('Expected the hybrid Gemini bundle')
+    if len(index['skills']) != len(HYBRID_SKILLS) or {s['name'] for s in index['skills']} != HYBRID_SKILLS:
+        raise ValueError('Expected the six hybrid skills in the index')
     if source['commit'] != lock['commit'] or source['profile'] != 'gemini':
         raise ValueError('Canonical source and Gemini profile locks disagree')
     if hashlib.sha256(json.dumps(index, sort_keys=True).encode()).hexdigest() != source['registry_sha256']:
