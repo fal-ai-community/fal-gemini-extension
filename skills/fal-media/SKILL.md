@@ -5,20 +5,10 @@ description: "Generate or process media with connected fal MCP tools. Use for Fa
 
 ## Client execution adapter
 
-This package uses the connected fal MCP tools for generation. CLI commands in
-this guide and its references illustrate endpoint inputs and dependencies;
-translate them into MCP calls instead of requiring a CLI installation.
-Use recommend_model for current choices unless the user names an endpoint.
-When it supplies next_call and input_contract, use those directly. Otherwise
-inspect the endpoint schema and matching price units before execution.
-Use run_model for bounded work; submit_job, check_job and get_job_result for
-queued work. Save the request ID immediately and poll that same request.
-Never assume a hosted sandbox, asset library or renderer exists. Verify local
-capabilities before composition. If a required capability is absent, deliver
-the reviewed components and report the incomplete stage. Preserve the user's
-provider, model, scope, budget and approval boundaries.
-
-The `genmedia` skill remains an optional terminal fallback only.
+Use the connected fal MCP tools and this bundle's `fal-media` entry point.
+The local outcome guides provide production checks; specialist guidance, model
+choices, input contracts and prices come from the live tools when needed.
+No CLI, hosted sandbox or renderer is installed by this skill bundle.
 
 
 # fal.ai Media
@@ -72,10 +62,3 @@ or fetch and run external scripts to recreate a missing environment.
   actual completion. A missing viewer does not justify resubmission.
 - Inspect artifacts with available tools. Report endpoint, request ID, result and
   material verification limits. Use only the scope, variants and budget requested.
-
-## Additional library guides
-
-The complete community library also includes `model-routing`, `fal-models-catalog`,
-`fal-prompting` and `fal-workflow`. Read them when installed and relevant. Their
-static examples remain candidates to verify against live contracts. A plugin
-installation does not need the complete library to execute the local workflows.

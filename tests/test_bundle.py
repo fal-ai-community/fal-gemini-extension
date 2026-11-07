@@ -1,3 +1,5 @@
+import hashlib
+import json
 import importlib.util
 from pathlib import Path
 import shutil
@@ -20,8 +22,21 @@ class BundleIntegrity(unittest.TestCase):
 
     def test_complete_payload(self):
         skills, files = validator.validate()
-        self.assertEqual(skills, 36)
+        self.assertEqual(skills, 6)
         self.assertGreater(files, skills)
+
+    def test_full_bundle_metadata_is_rejected_even_with_updated_hash(self):
+        root = self.snapshot()
+        source_path = root / 'skills-source.lock.json'
+        source = json.loads(source_path.read_text())
+        source['bundle'] = 'full'
+        source_path.write_text(json.dumps(source, indent=2) + '\n')
+        lock_path = root / 'bundle-source.lock.json'
+        lock = json.loads(lock_path.read_text())
+        lock['files']['skills-source.lock.json'] = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        lock_path.write_text(json.dumps(lock, indent=2) + '\n')
+        with self.assertRaisesRegex(ValueError, 'hybrid'):
+            validator.validate(root)
 
     def test_changed_generated_content_is_rejected(self):
         root = self.snapshot()
@@ -38,7 +53,7 @@ class BundleIntegrity(unittest.TestCase):
 
     def test_missing_skill_asset_is_rejected(self):
         root = self.snapshot()
-        (root / 'skills/product-ad-campaign/assets/plan.json').unlink()
+        (root / 'skills/product-ad-campaign/SKILL.md').unlink()
         with self.assertRaises(ValueError):
             validator.validate(root)
 

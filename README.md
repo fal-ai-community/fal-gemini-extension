@@ -1,8 +1,10 @@
 # fal.ai for Gemini CLI
 
 Create images, videos, audio and 3D with the hosted [fal MCP server](https://fal.ai/mcp).
-The extension includes the complete creative skill library, references and local
-production helpers from [fal-ai-community/skills](https://github.com/fal-ai-community/skills).
+The extension includes six focused skills: `fal-media` and five creative outcome
+guides. It retrieves specialist guidance, current model contracts and pricing
+through MCP when needed. The [community repository](https://github.com/fal-ai-community/skills)
+keeps the complete library, references and optional local production tools.
 
 ## Install
 
@@ -32,10 +34,14 @@ Example:
 > the product reference and missing brand details. Check models and prices, then
 > show the deliverables and estimated cost before generation.
 
-Some skills need local rendering or composition tools. Check each skill's
-requirements before promising an assembled film, atlas or captioned export.
-The MCP execution adapter translates terminal examples into connected fal tools.
-It does not require genmedia when MCP tools can complete the task.
+Assembled films, atlases and captioned exports can require local composition
+tools. Check those capabilities before promising a completed export. This compact
+extension installs no CLI, renderer, hooks or local runtime dependencies.
+
+For the complete library and optional tools, use the community repository's
+[installation guide](https://github.com/fal-ai-community/skills/blob/main/docs/install.md).
+The [v0.1.0 full archive](https://github.com/fal-ai-community/skills/releases/tag/v0.1.0)
+remains available for users who explicitly need every skill.
 
 ## Updates
 
@@ -49,7 +55,9 @@ copied skill files independently. `skills-source.lock.json` identifies that sour
 `bundle-source.lock.json` records each generated file's hash.
 
 Maintainers run the canonical `scripts/build-distribution.py` with a full source
-commit SHA. Copy its `gemini/` output into this repository. Rebuild the file-hash
+commit SHA. Its default Gemini export is hybrid; `--gemini-bundle full` is an
+explicit full-library option for separate exports. Copy the default `gemini/`
+output into this repository. Rebuild the file-hash
 lock and run the local validation before an update. CI validates files only.
 
 ```sh
